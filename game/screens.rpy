@@ -145,7 +145,7 @@ style namebox:
     ypos gui.name_ypos
     ysize gui.namebox_height
 
-    background Frame("gui/namebox.png", gui.namebox_borders, tile=gui.namebox_tile, xalign=gui.name_xalign)
+    background Frame("gui/nameboxpaper.png", gui.namebox_borders, tile=gui.namebox_tile, xalign=gui.name_xalign)
     padding gui.namebox_borders.padding
 
 style say_label:
@@ -372,11 +372,13 @@ screen main_menu():
     if gui.show_name:
 
         vbox:
-            text "[config.name!t]":
+            text "Concerto":
                 style "main_menu_title"
+                font "BlackCasper.ttf"
+                color "#ffffff"
 
-            text "[config.version]":
-                style "main_menu_version"
+            #text "[config.version]":
+            #    style "main_menu_version"
 
 
 style main_menu_frame is empty
@@ -389,7 +391,7 @@ style main_menu_frame:
     xsize 280
     yfill True
 
-    background "gui/overlay/main_menu.png"
+    background "gui/overlay/main_menupaper.png"
 
 style main_menu_vbox:
     xalign 1.0

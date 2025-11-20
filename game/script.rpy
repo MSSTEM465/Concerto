@@ -97,6 +97,7 @@ image spencer talk wonder = Image("spencertalkwonder.png", oversample=1.75)
 image spencer talk wonder flip = Transform(Image("spencertalkwonder.png",oversample=1.75),xzoom=-1)
 image spencer wave = Image("spencerwave.png", oversample=1.75)
 image spencer wave flip = Transform(Image("spencerwave.png",oversample=1.75),xzoom=-1)
+image black = "#000000"
 
 
 
@@ -139,17 +140,20 @@ default selected_song = None
 # Change the entire GUI! Give menu background, 
 
 label start:
-    menu:
+    if newgameplus:
+        menu:
 
-        "Skip Tutorial?"
+            "Skip Tutorial?"
 
-        "Yes":
+            "Yes":
 
-            jump skip
+                jump skip
         
-        "No":
+            "No":
 
-            jump tutorial
+                jump tutorial
+    else:
+        jump tutorial
 
 label musicTesting:
     "Hi me"
@@ -416,7 +420,7 @@ label lobby:
 
     d "It says that a band is composed of 4 members, no exact requirements on the intruments. I probably need a singer, bassist and a drumist."
 
-    show daniel talk embarrased at right
+    show daniel talk embarrassed flip at right
 
     d "This might be a tough search." # embarrassed dan
 
@@ -470,9 +474,10 @@ label outside427:
     d "I believe this is it." # dan
 
     show daniel idle at left
-    #Knocking sound
+    play sound "knocking.mp3"
+    pause 2.5
 
-    q "Yeah? Who is it?" # dont show jack yet
+    q "Yeah? Who is it?"
 
     show daniel talking at left
 
@@ -785,7 +790,7 @@ label stage:
     $ quick_menu = True
     window show
 
-    if rhythm_game_displayable.score > 1000:
+    if rhythm_game_displayable.score > 18000:
 
         show daniel idle at left
         show jack talk at center
@@ -849,36 +854,28 @@ label stage:
         jump seatingArea
 
 transform leftmost:
-    xalign 0
-    yalign 0
+    align(0.0,1.0)
 
 transform pos20:
-    xalign 0.2
-    yalign 0
+    align(0.2,1.0)
 
 transform pos40:
-    xalign 0.4
-    yalign 0
+    align(0.4,1.0)
 
 transform pos60:
-    xalign 0.6
-    yalign 0
+    align(0.6,1.0)
 
 transform pos80:
-    xalign 0.8
-    yalign 0
+    align(0.8,1.0)
 
 transform leftmiddle:
-    xalign 0.333
-    yalign 0
+    align(0.333,1.0)
 
 transform rightmiddle:
-    xalign 0.666
-    yalign 0
+    align(0.666,1.0)
 
 transform rightmost:
-    xalign 1
-    yalign 0
+    align(1.0,1.0)
 
 label seatingArea:
     scene pier with None
@@ -1118,15 +1115,36 @@ label waitingRoom:
     with easeoutright
     window show
 
+    show daniel idle at left
+    show alex idle at pos20
+    show spencer idle at pos40
+    show jack idle at pos60
+    show hostess talk flip at right
+
     r "Hi! Are you guys here for the competition held today?"
+
+    show hostess idle flip at right
+    show daniel talking at left
 
     d "Yeah, where do we go?"
 
+    show daniel idle at left
+    show hostess talk flip at right
+
     r "Have a seat anywhere, and fill out the top page. Place it beneath and give it to your teammates after. How many of you are there?"
+
+    show hostess idle flip at right
+    show jack talk at pos60
 
     ja "Just 4."
 
+    show jack idle at pos60
+    show hostess talk flip at right
+
     r "Perfect! Take this clipboard and give it to me after you have filled out everything."
+
+    show daniel talking at left
+    show hostess idle flip at right
 
     d "Alright, thank you."
     show testTransition
@@ -1135,30 +1153,78 @@ label waitingRoom:
     jump waitingRoom2
 
 label waitingRoom2:
-    # Special Pre Rendered images
+    scene waiting room with None
+    show testTransition with None
+    hide testTransition
+    with easeoutright
+    window show
+
+    show alex talk at left
+    show daniel idle at leftmiddle
+    show spencer idle flip at rightmiddle
+    show jack idle flip at right
+
     a "Comfy chairs, huh?"
+
+    show alex idle at left
+    show daniel talking at leftmiddle
 
     d "True."
 
+    show daniel idle at leftmiddle
+
     "Reading out the form, Daniel realizes one thing. One very, very important thing."
 
+    show daniel talking at leftmiddle
+
     d "Hey, uhh.. what do we put as our band name?"
+    
+    show daniel idle at leftmiddle
+    show jack talk flip at right
 
     ja "Didn't we discuss that at the pier?"
 
+    show jack idle flip at right
+    show alex talk at left
+
     a "No, I don't think so."
+
+    show alex idle at left
+    show spencer talk flip at rightmiddle
 
     s "Yeah, I don't remember anything about naming."
 
+    show spencer idle flip at rightmiddle
+    show alex talk at left
+
     a "I think it's fair to give Dan the choice."
+
+    show alex idle at left
+    show jack talk flip at right
 
     ja "Yeah, Dan has come a far way to round us up. It's fair to give him the privilege to name the group."
 
+    show jack idle flip at right
+    show spencer talk flip at rightmiddle
+
     s "I agree aswell."
+
+    show spencer idle flip at rightmiddle
+    show daniel talking at leftmiddle
 
     d "You guys sure?"
 
+    show daniel idle at leftmiddle
+    show spencer talk flip at rightmiddle
+    show jack talk flip at right
+    show alex talk at left
+
     allC "Yep."
+    
+    show daniel talking at leftmiddle
+    show alex idle at left
+    show jack idle flip at right
+    show spencer idle flip at rightmiddle
 
     d "Alright..."
 
@@ -1167,9 +1233,18 @@ label waitingRoom2:
 
     d "Our group name will be [group_name]!"
 
+    show alex talk at left
+    show daniel idle at leftmiddle
+
     a "Yeah!"
 
+    show alex idle at left
+    show spencer talk flip at rightmiddle
+
     s "Lets win this, [group_name]!"
+
+    show spencer idle flip at rightmiddle
+    show jack talk flip at right
 
     ja "Good luck, guys!"
     show testTransition
@@ -1182,26 +1257,64 @@ label waitingRoom3:
     show testTransition with None
     hide testTransition
     with easeoutright
+
+    show daniel idle at left
+    show alex idle at pos20
+    show jack idle at pos40
+    show spencer idle at pos60
+    show hostess talk flip at right
     
     r "[group_name]!"
 
+    show hostess idle flip at right
+    show daniel talking at left
+
     d "Thats us!"
+
+    show daniel idle at left
+    show hostess talk flip at right
 
     r "You are up next, rivalling the.."
 
+    show testTransition
+    with easeinleft
     window hide
     $ showCard("cc")
+    hide testTransition with easeoutright
     window show
 
     r "Wouldn't be surprised if you beat them, but I wouldn't be surprised if you lose against them. They are a resilent band, but I've seen you around, and you seem good enough to compete against them."
 
+    show hostess idle at right
+    show jack talk pumped at pos40
+
     ja "We stand a chance, atleast." # jack pumped
+
+    show jack idle at pos40
+    show spencer talk at pos60
 
     s "This will be easy!"
 
+    show spencer idle at pos60
+    show hostess talk flip at right
+
     r "Seems they are finishing up. Get ready!"
 
-    # play song vs. cc
+    window hide
+    $ quick_menu = False
+    $ renpy.block_rollback()
+
+    #$ song = Song('Tutorial Song', 'audio/', "audio/", beatmap_stride=2)
+    $ rhythm_game_displayable = RhythmGameDisplayable(rhythm_game_songs[4])
+    call screen rhythm_game(rhythm_game_displayable) # edited the screen parameters, now allows a second parameter for a background
+    show testTransition with None
+    hide testTransition
+    with easeoutright
+    $ renpy.block_rollback()
+    $ renpy.checkpoint()
+
+    $ quick_menu = True
+    window show
 
     show testTransition
     with easeinleft
@@ -1212,19 +1325,45 @@ label waitingRoom4:
     hide testTransition
     with easeoutright
 
-    if True:
+    show alex idle at left
+    show daniel idle at pos20
+    show jack idle flip at pos40
+    show spencer idle flip at pos60
+
+    if rhythm_game_displayable.score > 20000:
+
+        show alex talk happy at left
 
         a "We did it!" # alex celebrate
 
+        show daniel talking at pos20
+        show alex idle at left
+
         d "What do you think? We passed them in the bracket?" 
+
+        show daniel idle at pos20
+        show spencer talk flip at pos60
 
         s "Oh yeah, 100 percent. No way they won against us." 
 
+        show spencer idle flip at pos60
+        show jack talk flip at pos40
+
         ja "Not to toot my own horn, but their drummist clearly had no experience with the drums. No way we lose against those guys!" # jack scoff
+
+        show jack idle at pos40
+        show spencer idle at pos60
+        show hostess talk flip at right with easeinright
 
         r "Great job, [group_name]. You did great out there! Listen from the curtains to hear the results."
 
+        show hostess idle flip at right
+        show spencer talk pumped at pos60
+
         s "Lets go!" # spencer pumped
+
+        show testTransition
+        with easeinleft
 
         #Fade to black
 
@@ -1255,40 +1394,107 @@ label waitingRoom4:
         jump failure
 
 label waitingRoom5:
+    scene waiting room with None
+    show testTransition with None
+    hide testTransition
+    with easeoutright
+
+    show alex idle at left
+    show daniel idle at pos20
+    show jack idle at pos40
+    show spencer idle at pos60
+    show hostess talk flip at right
 
     r "[group_name]!"
 
+    show daniel talking at pos20
+    show hostess idle flip at right
+
     d "Yeah?"
+
+    show hostess talk flip at right
 
     r "If you haven't have heard, you proceeded further into the competition. Great job!"
 
     r "Welcome to the semi-semi finales! Next up is you and..."
 
+    show testTransition
+    with easeinleft
     window hide
     $ showCard("rc")
+    hide testTransition with easeoutright
     window show
 
     r "The Riots are on a winning streak, and made semi finales in nearly all competitions they participated it. I would be surprised if you beat them, being a newcomer and all."
 
+    show hostess idle flip at right
+    show jack talk at pos40
+
     ja "Sooo... easy peazy lemon squeezy?"
+
+    show jack idle at pos40
+    show alex talk at left
 
     a "Don't push our luck."
 
+    show alex idle at left
+    show hostess talk flip at right
+
     r "You're up next. Have fun out there!"
+
+    window hide
+    $ quick_menu = False
+    $ renpy.block_rollback()
+
+    #$ song = Song('Tutorial Song', 'audio/', "audio/", beatmap_stride=2)
+    $ rhythm_game_displayable = RhythmGameDisplayable(rhythm_game_songs[5])
+    call screen rhythm_game(rhythm_game_displayable) # edited the screen parameters, now allows a second parameter for a background
+    show testTransition with None
+    hide testTransition
+    with easeoutright
+    $ renpy.block_rollback()
+    $ renpy.checkpoint()
+
+    $ quick_menu = True
+    window show
 
     # play song vs. rc
 
 label waitingRoom6:
+    scene waiting room with None
+    show testTransition with None
+    hide testTransition
+    with easeoutright
 
-    if True:
+    show alex idle at left
+    show daniel idle at pos20
+    show jack idle flip at pos40
+    show spencer idle flip at pos60
+
+    if rhythm_game_displayable.score > 21000:
+
+        show daniel talking at pos20
 
         d "Woo! That was so fun!"
 
+        show daniel idle at pos20
+        show alex talk at left
+
         a "Yeah! That was great!"
 
+        show alex idle at left
+        show jack talk flip at pos40
+
         ja "Riot Circuit's are worse than our circuits!"
+        
+        show jack idle flip at pos40
+        show spencer talk flip at pos60
 
         s "Dumb joke, but yeah!"
+
+        show spencer idle at pos60
+        show jack idle at pos40
+        show hostess talk flip at right with easeinright
 
         r "Congratulations you guys! Crowd reactions were insane! I haven't heard that many cheers for a rival against the Riots."
 
@@ -1296,11 +1502,17 @@ label waitingRoom6:
 
         r "Winner for the next battle will be the ones you will be fighting in the semi-finals. Come watch!"
 
+        show daniel talking at pos20
+
         d "That would be smart, yeah?"
+
+        show daniel idle at pos20
+        show spencer talk at pos60
 
         s "Lets go see who we are rivaling against!"
 
-        # Fade to black
+        show testTransition
+        with easeinleft
 
         "And the winner is..."
 
@@ -1324,6 +1536,22 @@ label waitingRoom6:
 
         s "Lets prepare, I gotta show these four whose boss."
 
+        window hide
+        $ quick_menu = False
+        $ renpy.block_rollback()
+
+        #$ song = Song('Tutorial Song', 'audio/', "audio/", beatmap_stride=2)
+        $ rhythm_game_displayable = RhythmGameDisplayable(rhythm_game_songs[6])
+        call screen rhythm_game(rhythm_game_displayable) # edited the screen parameters, now allows a second parameter for a background
+        show testTransition with None
+        hide testTransition
+        with easeoutright
+        $ renpy.block_rollback()
+        $ renpy.checkpoint()
+
+        $ quick_menu = True
+        window show
+
         # play song
 
     else:
@@ -1331,52 +1559,131 @@ label waitingRoom6:
         d "Yeah, they were tough."
 
         ja "There's no way we won against them."
+
+        jump failure
     
 label waitingRoom7:
+    scene waiting room with None
+    show testTransition with None
+    hide testTransition
+    with easeoutright
 
-    if True:
+    show alex idle at left
+    show daniel idle at pos20
+    show jack idle flip at pos40
+    show spencer talk flip at pos60
+
+    if rhythm_game_displayable.score > 30000:
 
         s "Yes! Woo!"
 
+        show spencer idle flip at pos60
+        show daniel talking at pos20
+
         d "That was incredible Spencer. We knocked the four right off the board!"
 
+        show daniel idle at pos20
+        show spencer idle at pos60
+        show jack idle at pos40
+        show hostess talk flip at right with easeinright
+
         r "Indeed you have, guys! Haven't seen the judges more surprised ever." 
+        show hostess giggle flip at right
         r "The most emotion I have ever seen on their face! " # manager giggle
+        show hostess talk flip at right
         r "But, uhh.. the hardest part of this isn't over."
         r "The newcomer who was in the semi-finals? 7 years ago? They are up next, against you guys."
+        show testTransition
+        with easeinleft
         window hide
         $ showCard("td")
+        hide testTransition with easeoutright
         window show
         r "They also won that competition. Make a miracle happen."
+        hide hostess talk idle with easeoutright
+        show daniel talking at pos20
+        show spencer idle flip at pos60
+        show jack idle flip at pos40
 
         d "You heard her, lets perform a miracle!"
+
+        show daniel idle at pos20
+        show spencer talk flip at pos60
+        show jack talk flip at pos40
+        show alex talk at left
         allC "Yeah!"
 
-        #play song vs. the disenters
+        window hide
+        $ quick_menu = False
+        $ renpy.block_rollback()
+
+        $ rhythm_game_displayable = RhythmGameDisplayable(rhythm_game_songs[7])
+        call screen rhythm_game(rhythm_game_displayable)
+        show testTransition with None
+        hide testTransition
+        with easeoutright
+        $ renpy.block_rollback()
+        $ renpy.checkpoint()
+
+        $ quick_menu = True
+        window show
 
 label results:
 
+    show alex idle at left
+    show daniel talking at pos20
+    show jack idle flip at pos40
+    show spencer talk flip at pos60
+
     d "Gosh, that was difficult."
 
-    if True:
+    if rhythm_game_displayable.score > 40000:
+
+        show alex talk at left
 
         a "You went ham on the guitar, dude! Insane performance from you."
 
+        show jack talk flip at pos40
+        show alex idle at left
+
         ja "Exactly! It's insane how you haven't contested before."
+
+        show spencer talk flip at pos60
+        show jack idle flip at pos40
 
         s "Same here, dude. I wouldn't be surprised if you were a member of The Disenters or something."
 
+        show spencer idle flip at pos60
+        show daniel talking at pos20
+
         d "Ha, thanks guys. You all did incredible yourselves."
         d "Hey, what if we keep this up? Don't let this become a one time gig and become a real band or something?"
+
+        show daniel idle at pos20
+        show spencer talk flip at pos60
         
         s "I'd love to continue playing with you all."
 
+        show spencer idle flip at pos60
+        show alex talk at left
+
         a "I have never gotten this far with others. My singing has never sounded this good. I'm in."
+
+        show alex idle at left
+        show jack talk flip at pos40
 
         ja "I'm so glad I lucked out and Jay recommended me to you. I would have never gotten this far playing the drums if it wasn't for you knocking on my door."
         ja "So, you are now looking at your band's drumist."
 
+        show jack idle flip at pos40
+        show daniel talking at pos20
+
         d "Thank you so much guys. Cheers to [group_name]!"
+
+        show daniel idle at pos20
+        show jack talk flip at pos40
+        show spencer talk flip at pos60
+        show alex talk at left
         allC "[group_name]!"
 
     else:
@@ -1392,8 +1699,8 @@ label results:
     with easeoutright
 
     "Incredible performances from everyone tonight! Give a big round of applause to everyone who tried their best at todays competition."
-    # round of applause
-    # pause until applause ends
+    play sound "applause.mp3"
+    pause 10
 
     "But, there can be only one winner from the 16 teams."
 
@@ -1401,7 +1708,7 @@ label results:
     "And we have The Disenters, the band who set that record 7 years ago..."
     "Two incredible fierceless forces battling eachother, with only one winning..."
     "The winner is..."
-    if True:
+    if rhythm_game_displayable.score > 40000:
         "{size=+20}{font=BlackCasper.ttf}[group_name]{/font}!!!{/size}"
 
         d "Woo!"
@@ -1413,6 +1720,7 @@ label results:
         ja "Congrats guys! We did incredible!"
         show testTransition
         with easeinleft
+        $ newgameplus = True
         jump credits
     else:
         "{size=+20}{font=BlackCasper.ttf}The Disenters{/font}!!!{/size}"
