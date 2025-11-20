@@ -118,6 +118,8 @@ init python:
     Song('Last Resort | Vs. Legendary Four', 'audio/LR.mp3','audio/beatslr.txt', 'audio/laneslr.txt',1), #30000
     Song('Through the Fire and Flames | Vs. The Disenters', 'audio/TTFAF.mp3', 'audio/beatsttfaf.txt', 'audio/lanesttfaf.txt',1)
     ]
+    config.keymap['toggle_fullscreen'].remove('noshift_K_f')
+    config.keymap['director'].remove('noshift_K_d')
 
     # call screen rhythm_game(RhythmGameDisplayable(rhythm_game_songs[songNumber]))
 
@@ -163,7 +165,7 @@ label musicTesting:
     $ renpy.block_rollback()
 
     #$ song = Song('Tutorial Song', 'audio/', "audio/", beatmap_stride=2)
-    $ rhythm_game_displayable = RhythmGameDisplayable(rhythm_game_songs[6])
+    $ rhythm_game_displayable = RhythmGameDisplayable(rhythm_game_songs[0])
     call screen rhythm_game(rhythm_game_displayable) # edited the screen parameters, now allows a second parameter for a background
     show testTransition with None
     hide testTransition
@@ -177,6 +179,7 @@ label musicTesting:
     "[rhythm_game_displayable.score]"
 
 label failure:
+    show testTransition
     "You have failed."
 
     $ MainMenu(confirm=False)()    
@@ -852,6 +855,11 @@ label stage:
         with easeinleft
 
         jump seatingArea
+    else:
+        show alex talk flip at right
+        a "I'll take my singing elsewhere."
+
+        jump failure
 
 transform leftmost:
     align(0.0,1.0)
@@ -967,6 +975,12 @@ label seatingArea:
         with easeinleft
 
         jump campus
+    else:
+        show spencer talk flip at right
+
+        s "I think I'm fine."
+
+        jump failure
 
 label campus: # Shore background
     scene beach with None
@@ -1385,9 +1399,17 @@ label waitingRoom4:
     
     else:
 
+        show daniel talking at pos20
+
         d "That wasn't good."
 
+        show daniel idle at pos20
+        show spencer talk flip at pos60
+
         s "That really sucked."
+
+        show spencer idle flip at pos60
+        show alex talk at left
 
         a "Lets, not do that again."
 
@@ -1555,8 +1577,15 @@ label waitingRoom6:
         # play song
 
     else:
+        show alex idle at left
+        show daniel talking at pos20
+        show jack idle flip at pos40
+        show spencer idle flip at pos60
 
         d "Yeah, they were tough."
+
+        show jack talk flip at pos40
+        show daniel idle at pos20
 
         ja "There's no way we won against them."
 
@@ -1627,6 +1656,14 @@ label waitingRoom7:
 
         $ quick_menu = True
         window show
+    
+    else:
+
+        show spencer talk flip at pos60
+
+        s "The four are too tough to beat, even now.."
+
+        jump failure
 
 label results:
 
@@ -1687,11 +1724,17 @@ label results:
         allC "[group_name]!"
 
     else:
+        show daniel idle at pos20
+        show spencer talk flip at pos60
 
-        "I dont wanna write this one out rn remind me later"
-        jump failure
+        s "We did pretty well."
 
-        # Stage view
+        show spencer idle flip at pos60
+        show alex talk at left
+
+        a "Lets see what we get."
+
+    # Stage view
     show testTransition
     with easeinleft
     scene stage
@@ -1731,7 +1774,8 @@ label results:
 label credits:
     scene black
     show screen creditscreen
-    pause 100 # or however long it takes to scroll through in a reasonable speed
+    pause 100
+    # or however long it takes to scroll through in a reasonable speed
     pause
     hide screen creditscreen
     $ newgameplus = True
@@ -1854,7 +1898,7 @@ screen cc:
 screen creditscreen:
     vbox:
         xsize 1000 # horizontal size of the credits
-        ysize 5500 # how much vertical space your rolling credits take.
+        ysize 3500 # how much vertical space your rolling credits take.
         xalign 0.5
         yalign 0.0
         at transform:
@@ -1875,16 +1919,16 @@ screen creditscreen:
             xalign 0.5
         text ""
 
-        text "Primary Writer: E'Myla":
+        text "Primary Writer: E'Myla Greene":
             color "#ffffff"
         text "Secondary Writer: Maximillian Siewior":
             color "#ffffff"
         text ""
         text "Main Programmer: Maximillian Siewior":
             color "#ffffff"
-        text "Secondary Programmer: E'Myla":
+        text "Secondary Programmer: E'Myla Greene":
             color "#ffffff"
-        text "Concept Art: E'Myla":
+        text "Concept Art: E'Myla Greene":
             color "#ffffff"
         text "3D Scenery: Maximillian Siewior":
             color "#ffffff"
@@ -1897,34 +1941,11 @@ screen creditscreen:
             color "#ffffff"
         text "Rhythm Game Template: RuolinZheng08":
             color "#ffffff"
-        text "Made with Ren'Py.":
-            font "Harting_plain.ttf"
+        text "Made with Ren'Py":
             color "#ffffff"
-            bold True
+        text "Thanks for playing.":
+            color "#ffffff"
             xalign 0.5
-
-label test:
-    e "Welcome to the Ren'Py Rhythm Game! Ready for a challenge?"
-    window hide
-    $ quick_menu = False
-
-    # avoid rolling back and losing chess game state
-    $ renpy.block_rollback()
-
-    $ song = Song('Isolation', 'audio/Isolation.mp3', 'audio/Isolation.beatmap.txt', beatmap_stride=2)
-    $ rhythm_game_displayable = RhythmGameDisplayable(song)
-    call screen rhythm_game(rhythm_game_displayable)
-
-    # avoid rolling back and entering the chess game again
-    $ renpy.block_rollback()
-
-    # restore rollback from this point on
-    $ renpy.checkpoint()
-
-    $ quick_menu = True
-    window show
-
-    return
 
 """
 * Title: Ren'py Rhythm

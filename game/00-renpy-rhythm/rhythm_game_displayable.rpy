@@ -302,6 +302,10 @@ init python:
             # map pygame key code to track idx
             self.keycode_to_track_idx = {
             pygame.K_LEFT: 0,
+            pygame.K_d: 0,
+            pygame.K_f: 1,
+            pygame.K_j: 2,
+            pygame.K_k: 3,
             pygame.K_UP: 1,
             pygame.K_DOWN: 2,
             pygame.K_RIGHT: 3
