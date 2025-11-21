@@ -1320,7 +1320,7 @@ label waitingRoom3:
 
     #$ song = Song('Tutorial Song', 'audio/', "audio/", beatmap_stride=2)
     $ rhythm_game_displayable = RhythmGameDisplayable(rhythm_game_songs[4])
-    call screen rhythm_game(rhythm_game_displayable) # edited the screen parameters, now allows a second parameter for a background
+    call screen rhythm_game(rhythm_game_displayable,"showstage.png") # edited the screen parameters, now allows a second parameter for a background
     show testTransition with None
     hide testTransition
     with easeoutright
@@ -1470,7 +1470,7 @@ label waitingRoom5:
 
     #$ song = Song('Tutorial Song', 'audio/', "audio/", beatmap_stride=2)
     $ rhythm_game_displayable = RhythmGameDisplayable(rhythm_game_songs[5])
-    call screen rhythm_game(rhythm_game_displayable) # edited the screen parameters, now allows a second parameter for a background
+    call screen rhythm_game(rhythm_game_displayable,"showstage.png") # edited the screen parameters, now allows a second parameter for a background
     show testTransition with None
     hide testTransition
     with easeoutright
@@ -1564,7 +1564,7 @@ label waitingRoom6:
 
         #$ song = Song('Tutorial Song', 'audio/', "audio/", beatmap_stride=2)
         $ rhythm_game_displayable = RhythmGameDisplayable(rhythm_game_songs[6])
-        call screen rhythm_game(rhythm_game_displayable) # edited the screen parameters, now allows a second parameter for a background
+        call screen rhythm_game(rhythm_game_displayable,"showstage.png") # edited the screen parameters, now allows a second parameter for a background
         show testTransition with None
         hide testTransition
         with easeoutright
@@ -1647,7 +1647,7 @@ label waitingRoom7:
         $ renpy.block_rollback()
 
         $ rhythm_game_displayable = RhythmGameDisplayable(rhythm_game_songs[7])
-        call screen rhythm_game(rhythm_game_displayable)
+        call screen rhythm_game(rhythm_game_displayable,"showstage.png")
         show testTransition with None
         hide testTransition
         with easeoutright
